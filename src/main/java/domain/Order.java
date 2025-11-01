@@ -1,18 +1,21 @@
-package domain;
+package com.company.orders.domain;
+
+import com.company.orders.model.OrderStatus;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import model.OrderStatus;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
-@Data                       // genera getters/setters/toString/equals/hashCode
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -25,19 +28,22 @@ public class Order {
     @NotBlank
     private String customerName;
 
+    // Guardamos items como colección simple de Strings
     @ElementCollection
     @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
     @Column(name = "item")
-    private List<String> items;
+    private List<String> items = new ArrayList<>();
 
     @NotNull
     private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private OrderStatus status;
-
-    @Builder.Default
-    private Instant createdAt = Instant.now();
 }
+
+
+
+
 
 

@@ -1,8 +1,11 @@
-package model;
+package com.company.orders.model;
 
 public enum OrderStatus {
-    CREATED, PAID, SHIPPED, CANCELLED
+    NEW, PAID, SHIPPED, CANCELLED
 }
+
+
+
 
 
 

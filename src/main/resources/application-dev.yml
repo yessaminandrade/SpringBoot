@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: order-management
   datasource:
     url: jdbc:h2:mem:ordersdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
     driver-class-name: org.h2.Driver
@@ -13,15 +11,14 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
 
-app:
-  orders:
-    max-items: 100
+# Consola H2
+spring.h2.console.enabled: true
+spring.h2.console.path: /h2-console
 
-server:
-  port: 8080
+# Actuator más abierto solo en dev
+management.endpoints.web.exposure.include: "*"
 
+# Seguridad dev (permitimos h2-console)
+security:
+  dev: true

@@ -1,42 +1,41 @@
 package controller;
 
-import domain.Order;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import com.company.orders.domain.Order;   // ← corregido
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.OrderService;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/orders")
-@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService service;
 
-    @PostMapping
-    public ResponseEntity<Order> create(@Valid @RequestBody Order order) {
-        Order saved = service.create(order);
-        return ResponseEntity.created(URI.create("/api/orders/" + saved.getId())).body(saved);
+    public OrderController(OrderService service) {
+        this.service = service;
     }
 
-    @GetMapping
-    public List<Order> list() {
-        return service.findAll();
+    @PostMapping
+    public ResponseEntity<Order> create(@RequestBody Order order) {
+        return ResponseEntity.ok(service.create(order));
     }
 
     @GetMapping("/{id}")
-    public Order get(@PathVariable UUID id) {
-        return service.findById(id);
+    public ResponseEntity<Order> get(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.findById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Order>> list() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @PutMapping("/{id}")
-    public Order update(@PathVariable UUID id, @Valid @RequestBody Order order) {
-        return service.update(id, order);
+    public ResponseEntity<Order> update(@PathVariable UUID id, @RequestBody Order order) {
+        return ResponseEntity.ok(service.update(id, order));
     }
 
     @DeleteMapping("/{id}")
@@ -45,4 +44,8 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 }
+
+
+
+
 
